@@ -1,22 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db/connection');
+const { getAllPosts, createPost, getPostsBySearch, getPostById } = require('../db/queries/postsQueries');
+const { getUsersVisible } = require('../db/queries/getUsersVisible');
+
 
 // Home page route
 router.get('/', async (req, res) => {
   try {
-    // Updated query to include the author's username
-    const postsResult = await db.query(`
-      SELECT posts.*, users.username 
-      FROM posts 
-      JOIN users ON posts.user_id = users.id 
-      ORDER BY posts.created_at DESC
-    `);
-    const posts = postsResult.rows;
-
-    const usersResult = await db.query('SELECT * FROM users WHERE visible = true');
-    const users = usersResult.rows;
-
+    const posts = await getAllPosts();
+    const users = await getUsersVisible();
     res.render('index', { posts, users, user: req.session.user });
   } catch (err) {
     console.error(err);
@@ -24,17 +16,13 @@ router.get('/', async (req, res) => {
   }
 });
 
-
-
-//create
+// Create post
 router.post('/create-post', async (req, res) => {
   const { title, url, description, topic_id } = req.body;
   const userId = req.session.user.id; // Retrieve user ID from session
 
   try {
-    await db.query('INSERT INTO posts (title, url, description, topic_id, user_id, created_at) VALUES ($1, $2, $3, $4, $5, NOW())', 
-      [title, url, description, topic_id, userId]);
-
+    await createPost(title, url, description, topic_id, userId);
     res.redirect('/users/profile'); // Redirect to user profile
   } catch (err) {
     console.error(err);
@@ -42,33 +30,23 @@ router.post('/create-post', async (req, res) => {
   }
 });
 
-
-
-// topics fetch >>
+// Topics fetch
 router.get('/new', async (req, res) => {
   try {
-    const topicsResult = await db.query('SELECT * FROM topics');
-    const topics = topicsResult.rows;
-
-    res.render('newPost', { topics: topics });
+    const topics = await getTopics(); // Assuming you have a getTopics function in topicsQueries.js
+    res.render('newPost', { topics });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
   }
 });
 
-
 // Search route
 router.get('/search', async (req, res) => {
   const searchTerm = req.query.search;
   try {
-    const postsResult = await db.query("SELECT * FROM posts WHERE title ILIKE $1 OR description ILIKE $1 ORDER BY created_at DESC", [`%${searchTerm}%`]);
-    const posts = postsResult.rows;
-
-    // Fetch users visible in user list
-    const usersResult = await db.query('SELECT * FROM users WHERE visible = true');
-    const users = usersResult.rows;
-
+    const posts = await getPostsBySearch(searchTerm);
+    const users = await getUsersVisible();
     res.render('index', { posts, users, user: req.session.user });
   } catch (err) {
     console.error(err);
@@ -79,10 +57,13 @@ router.get('/search', async (req, res) => {
 // Route to render an individual post
 router.get('/posts/:postId', async (req, res) => {
   const postId = req.params.postId;
-  // Fetch post data from the database using postId
-  // ...
-  res.render('Posts', { post: postData });
+  try {
+    const post = await getPostById(postId); // Assuming getPostById is defined in postsQueries
+    res.render('postDetail', { post }); // Ensure you have a postDetail.ejs view
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
 });
-
 
 module.exports = router;
