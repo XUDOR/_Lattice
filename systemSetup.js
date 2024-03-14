@@ -1,3 +1,5 @@
+//systemSetup.js
+
 require('dotenv').config();
 const { hashPassword } = require('./auth');
 const db = require('./db/connection'); // Adjust this path based on your project structure
