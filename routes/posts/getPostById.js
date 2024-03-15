@@ -1,10 +1,21 @@
-router.get('/posts/:postId', async (req, res) => {
-  const postId = req.params.postId;
-  try {
-    const post = await getPostById(postId);
-    res.render('postDetail', { post }); // Assuming 'postDetail' is your post detail view
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server Error");
-  }
+// routes/posts/getPostById.js
+const express = require('express');
+const router = express.Router();
+const { getPostById } = require('../../db/queries/postsQueries');
+
+router.get('/:postId', async (req, res) => {
+    const postId = req.params.postId;
+    try {
+        const post = await getPostById(postId);
+        if (post) {
+            res.render('postDetail', { post });
+        } else {
+            res.status(404).send("Post not found");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server Error");
+    }
 });
+
+module.exports = router;
