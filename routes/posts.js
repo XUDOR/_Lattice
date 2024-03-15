@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { getAllPosts, createPost, getPostsBySearch, getPostById } = require('../db/queries/postsQueries');
+const { getAllPosts, createPost, getPostsBySearch,  } = require('../db/queries/postsQueries');
 const { getUsersVisible } = require('../db/queries/getUsersVisible');
+
+const getPostByIdRouter = require('./posts/getPostById');
 
 
 // Home page route
@@ -55,15 +57,8 @@ router.get('/search', async (req, res) => {
 });
 
 // Route to render an individual post
-router.get('/posts/:postId', async (req, res) => {
-  const postId = req.params.postId;
-  try {
-    const post = await getPostById(postId); // Assuming getPostById is defined in postsQueries
-    res.render('postDetail', { post }); // Ensure you have a postDetail.ejs view
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server Error");
-  }
-});
+router.use('/post', getPostByIdRouter);
+
+
 
 module.exports = router;
