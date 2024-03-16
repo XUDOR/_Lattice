@@ -57,8 +57,6 @@ router.get('/search', async (req, res) => {
 });
 
 // Route to render an individual post
-router.use('/post', getPostByIdRouter);
-
-
+router.use('/', getPostByIdRouter);
 
 module.exports = router;

@@ -1,3 +1,4 @@
+// Assuming this is in ./db/queries/getPostById.js or similar
 const db = require('../connection');
 
 const getPostById = async (postId) => {

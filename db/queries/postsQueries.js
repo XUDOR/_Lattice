@@ -1,9 +1,7 @@
-const db = require('../connection');
-const createPost = require('./createPost'); // Adjust the path as needed
-const getAllPosts = require('./getAllPosts');
-const getPostsBySearch = require('./getPostsBySearch');
+const db = require('../connection'); // Adjust path as needed
+const createPost = require('./createPost'); // Example, assuming you have this set up similarly
+const getAllPosts = require('./getAllPosts'); // Same as above
+const getPostsBySearch = require('./getPostsBySearch'); // Same as above
 const getPostById = require('./getPostById');
 
-
 module.exports = { getAllPosts, createPost, getPostsBySearch, getPostById };
-

@@ -8,4 +8,4 @@ const getPostsBySearch = async (searchTerm) => {
   return results.rows;
 };
 
-module.exports = getPostsBySearch;
+module.exports =  getPostsBySearch ;

@@ -1,11 +1,12 @@
-// routes/posts/getPostById.js
+// Corrected import statement in routes/posts/getPostById.js
 const express = require('express');
 const router = express.Router();
-const { getPostById } = require('../../db/queries/postsQueries');
+// Destructure getPostById from the exported object
+const { getPostById } = require('../../db/queries/getPostById'); // Ensure path is correct
 
-router.get('/:postId', async (req, res) => {
-    const postId = req.params.postId;
+router.get('/posts/:postId', async (req, res) => {
     try {
+        const postId = req.params.postId;
         const post = await getPostById(postId);
         if (post) {
             res.render('postDetail', { post });

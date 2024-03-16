@@ -24,7 +24,7 @@
           <!-- Include postHeader for each post within the loop -->
           <%- include('partials/postHeader', { post: post }) %>
           <!-- post-footer div acting as a clickable link -->
-          <div class="post-footer" data-href="/path-to-post/<%= post.id %>">
+          <div class="post-footer" data-href="/posts/<%= post.id %>">
             <!-- Include postLink (footer) content -->
             <%- include('partials/postLink', { post: post }) %>
           </div>
