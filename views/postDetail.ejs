@@ -1,13 +1,31 @@
-<!-- views/postDetail.ejs -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title><%= post.title %></title>
-    <!-- include any necessary CSS files -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= post.title %></title>
+  <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="stylesheet" href="/styles/post.css" />
 </head>
 <body>
-    <h1><%= post.title %></h1>
-    <p><%= post.description %></p>
-    <!-- Display other post details as needed -->
+  <%- include('partials/nav') %>
+
+  <main class="post-container">
+    <article class="post-detail">
+      <h2 class="post-title"><%= post.title %></h2>
+      <% if (post.imageUrl) { %>
+        <img src="<%= post.imageUrl %>" alt="Image for <%= post.title %>" class="post-image">
+      <% } %>
+      <p class="post-description"><%= post.description %></p>
+      <p class="post-author">Posted by <%= post.username %> on <%= new Date(post.createdAt).toDateString() %></p>
+      <% if (post.url) { %>
+        <a href="<%= post.url %>" target="_blank" class="post-read-more">Read more</a>
+      <% } %>
+      <!-- You can add more details about the post here -->
+    </article>
+  </main>
+
+  <script src="/vendor/jquery-3.0.0.js"></script>
+  <script defer src="/scripts/app.js"></script>
 </body>
 </html>
