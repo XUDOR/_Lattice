@@ -9,7 +9,8 @@ router.get('/posts/:postId', async (req, res) => {
         const postId = req.params.postId;
         const post = await getPostById(postId);
         if (post) {
-            res.render('postDetail', { post });
+            // Include the user object from the session
+            res.render('postDetail', { post, user: req.session.user });
         } else {
             res.status(404).send("Post not found");
         }
@@ -18,5 +19,6 @@ router.get('/posts/:postId', async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
+
 
 module.exports = router;
