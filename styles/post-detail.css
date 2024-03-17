@@ -1,0 +1,37 @@
+/* Example adjustments in post-detail.css */
+.post-container {
+margin-top: 30px;
+}
+
+
+
+.post-detail {
+  max-width: 800px;
+  margin: auto;
+  background-color: #FCFBE3; 
+  border-radius: 5px;
+  padding: 30px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.title-link {
+  font-size: 1.5rem;
+}
+
+.post-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.post-description {
+ 
+  font-size: 20px; /* Example font size */
+  color: #333; /* Example font color */
+  margin: 10px 0; /* Example margins */
+}
+
+.post-author {
+  font-size: 1.2rem;
+  color: #94a8a5;
+}
